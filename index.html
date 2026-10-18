@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мэдлэгийн хайрцаг</title>
+<style>
+body{font-family:Arial,sans-serif;margin:0;background:#f0f9ff;color:#183344}
+header{background:#087e8b;color:white;text-align:center;padding:35px 15px;border-radius:0 0 25px 25px}
+h1{font-size:32px}
+main{max-width:600px;margin:25px auto;padding:15px}
+.card{background:white;padding:22px;margin:15px 0;border-radius:18px;box-shadow:0 4px 15px #0001}
+button{background:#087e8b;color:white;border:0;padding:12px 18px;border-radius:10px;font-size:16px;cursor:pointer}
+.answer{display:block;width:100%;margin:9px 0;text-align:left;background:#e5f5f5;color:#183344}
+#result{font-weight:bold;margin-top:15px}
+</style>
+</head>
+<body>
+<header>
+<h1>🧠 Мэдлэгийн хайрцаг</h1>
+<p>Мэдлэгээ сорьж, шинэ зүйл сураарай!</p>
+</header>
+<main>
+<div class="card">
+<h2>👋 Тавтай морил!</h2>
+<p>Асуултад зөв хариулж мэдлэгээ нэмээрэй.</p>
+<button onclick="start()">Тоглоом эхлүүлэх</button>
+</div>
+<div class="card" id="quiz" hidden>
+<p id="number"></p>
+<h2 id="question"></h2>
+<div id="answers"></div>
+<p id="result"></p>
+<button id="next" onclick="nextQuestion()" hidden>Дараагийн асуулт →</button>
+</div>
+</main>
+<script>
+const qs=[
+{q:"Монгол Улсын нийслэл аль хот вэ?",a:["Дархан","Улаанбаатар","Эрдэнэт"],c:1},
+{q:"Нэг долоо хоног хэдэн өдөртэй вэ?",a:["5","7","10"],c:1},
+{q:"Нар аль зүгээс манддаг вэ?",a:["Зүүн","Баруун","Хойд"],c:0}
+];
+let i=0,score=0;
+function start(){i=0;score=0;document.getElementById("quiz").hidden=false;show()}
+function show(){
+document.getElementById("number").textContent="Асуулт "+(i+1)+"/"+qs.length;
+document.getElementById("question").textContent=qs[i].q;
+document.getElementById("result").textContent="";
+document.getElementById("next").hidden=true;
+let box=document.getElementById("answers");box.innerHTML="";
+qs[i].a.forEach((a,j)=>{let b=document.createElement("button");b.className="answer";b.textContent=a;b.onclick=()=>check(j);box.appendChild(b)})
+}
+function check(j){
+let buttons=document.querySelectorAll(".answer");
+buttons.forEach(b=>b.disabled=true);
+if(j===qs[i].c){score++;document.getElementById("result").textContent="🎉 Зөв хариуллаа!"}
+else{document.getElementById("result").textContent="Зөв хариулт: "+qs[i].a[qs[i].c]}
+document.getElementById("next").hidden=false;
+}
+function nextQuestion(){i++;if(i<qs.length)show();else{document.getElementById("question").textContent="Баяр хүргэе!";document.getElementById("number").textContent="Тоглоом дууслаа";document.getElementById("answers").innerHTML="";document.getElementById("result").textContent="Таны оноо: "+score+"/"+qs.length;document.getElementById("next").hidden=true}}
+</script>
+</body>
+</html>
